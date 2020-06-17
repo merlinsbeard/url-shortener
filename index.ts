@@ -131,6 +131,7 @@ app.use(
 );
 
 const PORT: number = parseInt(process.env.PORT as string, 10) || 1337;
-app.listen(PORT, () => {
-  console.log(`App is listening on port ${PORT}!`);
+const HOST: string = process.env.HOST || "0.0.0.0";
+app.listen(PORT, HOST, () => {
+  console.log(`App is listening on ${HOST}:${PORT}!`);
 });
