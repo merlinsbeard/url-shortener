@@ -78,7 +78,7 @@ function UrlForm(props) {
     <div className="container">
       <form onSubmit={handleSubmit} className="has-addons has-addons-centered">
         <div class="field">
-          <label class="label">Url</label>
+          <label class="label">Url*</label>
           <div class="control">
             <input
               class="input"
@@ -88,6 +88,7 @@ function UrlForm(props) {
               {...bindLongUrl}
               required
             />
+            <p class="help">This field is required</p>
           </div>
         </div>
 
