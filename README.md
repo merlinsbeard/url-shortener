@@ -2,6 +2,8 @@
 
 Creates a short url from a url
 
+![](demo/demo.gif)
+
 ## Usage
 
 ```
