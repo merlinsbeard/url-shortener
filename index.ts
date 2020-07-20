@@ -6,6 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { nanoid } from "nanoid";
 import mongoose, { Document, Schema } from "mongoose";
+import sgMail from "@sendgrid/mail"
 require("mongoose-type-url");
 
 dotenv.config();
@@ -65,6 +66,39 @@ const validURL = (str: string) => {
   );
   return !!pattern.test(str);
 };
+
+interface EmailRequest {
+  to: string,
+  from: string,
+  subject: string,
+  text: string,
+  html: string
+}
+
+app.post("/email", async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+
+  const { body, subject } = req.body
+
+  if (!body || !subject) {
+    return res.status(400).send("Missing body or Subject");
+  }
+
+  const msg: EmailRequest = {
+    to: process.env.EMAIL_TO || 'me+emailer@sample.xyz',
+    from: process.env.EMAIL_FROM || 'me+sendgrid@sample.xyz',
+    subject: subject,
+    text: body,
+    html: body
+  };
+
+  try {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY || '')
+    const resp = await sgMail.send(msg)
+    return res.send("success!").status(202)
+  } catch (error) {
+    return res.send(error.response.body).status(400)
+  }
+})
 
 app.post("/short", async (req, res, next) => {
   let { longUrl, shortUrl } = req.body;
