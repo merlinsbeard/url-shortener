@@ -69,9 +69,14 @@ const validURL = (str: string) => {
 app.post("/short", async (req, res, next) => {
   let { longUrl, shortUrl } = req.body;
 
-  console.log(shortUrl);
-
   try {
+    if (
+      longUrl === "https://s.benpaat.xyz" ||
+      longUrl === "http://s.benpaat.xyz"
+    ) {
+      throw new Error("Cannot use current url");
+    }
+
     if (!shortUrl) {
       shortUrl = nanoid(5);
     } else {
