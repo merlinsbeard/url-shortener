@@ -10,6 +10,7 @@ require("mongoose-type-url");
 
 dotenv.config();
 
+const websiteURL = process.env.WEBSITE_URL || "s.benpaat.xyz";
 const app: express.Application = express();
 app.use(helmet());
 app.use(cors());
@@ -65,15 +66,16 @@ const validURL = (str: string) => {
   );
   return !!pattern.test(str);
 };
+app.post("/send-email", async (req, res) => {
+  await console.log("email");
+  return res.send("email-sent");
+});
 
 app.post("/short", async (req, res, next) => {
   let { longUrl, shortUrl } = req.body;
 
   try {
-    if (
-      longUrl === "https://s.benpaat.xyz" ||
-      longUrl === "http://s.benpaat.xyz"
-    ) {
+    if (longUrl === `https://${websiteURL}` || `http://${websiteURL}`) {
       throw new Error("Cannot use current url");
     }
 
